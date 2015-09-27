@@ -5,6 +5,7 @@ import problem.h000.d010.*;
 import problem.h000.d020.*;
 import problem.h000.d030.*;
 import problem.h000.d050.Problem050;
+import problem.h000.d050.Problem051;
 import problem.h000.d060.Problem067;
 
 public class Main {
@@ -19,6 +20,7 @@ public class Main {
             new Problem036(), new Problem037(), new Problem038(), new Problem039(), new Problem040(),
             new Problem041(), new Problem042(), new Problem043(), new Problem044(), new Problem045(),
             new Problem046(), new Problem047(), new Problem048(), new Problem049(), new Problem050(),
+            new Problem051(),
             new Problem067()
     };
 
