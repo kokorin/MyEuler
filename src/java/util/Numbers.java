@@ -112,8 +112,7 @@ public class Numbers {
     public static BigInteger factorial(long value) {
         return LongStream.rangeClosed(1, value).
                 mapToObj(val -> BigInteger.valueOf(val)).
-                reduce((left, right) -> left.multiply(right)).
-                get();
+                reduce(BigInteger.ONE, (left, right) -> left.multiply(right));
     }
 
     public static long sumOfDigits(BigInteger value) {
