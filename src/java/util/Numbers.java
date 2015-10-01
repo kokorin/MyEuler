@@ -125,6 +125,16 @@ public class Numbers {
         return result;
     }
 
+    public static BigInteger revert(BigInteger value) {
+        BigInteger result = BigInteger.ZERO;
+        while (!value.equals(BigInteger.ZERO)) {
+            BigInteger[] divRem = value.divideAndRemainder(BigInteger.TEN);
+            value = divRem[0];
+            result = result.multiply(BigInteger.TEN).add(divRem[1]);
+        }
+        return result;
+    }
+
     public static boolean hasNaturalRoot(long a, long b, long c) {
         for (long root : getIntegerRoots(a, b, c)) {
             if (root > 0) {

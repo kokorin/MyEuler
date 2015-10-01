@@ -19,7 +19,7 @@ public class Main {
             new Problem036(), new Problem037(), new Problem038(), new Problem039(), new Problem040(),
             new Problem041(), new Problem042(), new Problem043(), new Problem044(), new Problem045(),
             new Problem046(), new Problem047(), new Problem048(), new Problem049(), new Problem050(),
-            new Problem051(), new Problem052(), new Problem053(), new Problem054(),
+            new Problem051(), new Problem052(), new Problem053(), new Problem054(), new Problem055(),
             new Problem067()
     };
 
