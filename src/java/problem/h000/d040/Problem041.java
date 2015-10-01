@@ -15,26 +15,12 @@ import java.util.Iterator;
 public class Problem041 implements Problem {
     @Override
     public long solve() {
-        long maxPandigitalPrime = 0;
-
-        Iterator<Long> primeIterator = Primes.iterator();
         //all pandigital numbers except 4- and 7-digit ones are divisible by 3
-        while (primeIterator.hasNext()) {
-            long prime = primeIterator.next();
-            long digits = Numbers.numOfDigits(prime);
-            if (digits > 7) {
-                break;
-            }
-            if (digits != 4 && digits != 7) {
-                continue;
-            }
-
-            if (Numbers.isPandigital_1_to_N(prime)) {
-                maxPandigitalPrime = prime;
+        for (long value = 7_654_321; ; value-=2) {
+            if (Numbers.isPandigital_1_to_N(value) && Primes.isPrime(value)) {
+                return value;
             }
         }
-
-        return maxPandigitalPrime;
     }
 
     public static void main(String[] args) {

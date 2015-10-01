@@ -114,5 +114,10 @@ public class Divisors {
             this.prime = prime;
             this.power = power;
         }
+
+        @Override
+        public String toString() {
+            return prime + "^" + power;
+        }
     }
 }

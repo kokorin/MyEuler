@@ -3,6 +3,7 @@ package problem.h000.d040;
 import problem.Problem;
 import util.Divisors;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,58 +26,63 @@ public class Problem047 implements Problem {
 
     @Override
     public long solve() {
-        long result;
-        List<Long> numbers = new LinkedList<>();
-        List<List<Divisors.PrimeDivisor>> primeDivisors = new LinkedList<>();
-
-        for (int i = 0; i < TEST; i++) {
-            long value = 2 + i;
-            numbers.add(value);
-            primeDivisors.add(Divisors.getPrimeDivisors(value));
-        }
-
+        long firstValue = 2;
+        search:
         while (true) {
-            boolean everyNumberHasNFactors = true;
-            for (List<Divisors.PrimeDivisor> divisors : primeDivisors) {
-                if (divisors.size() < TEST) {
-                    everyNumberHasNFactors = false;
-                    break;
-                }
+            long lastValue = firstValue + TEST - 1;
+            List<Divisors.PrimeDivisor> lastDivisors = Divisors.getPrimeDivisors(lastValue);
+            //There can't be four consecutive integers with such property
+            if (lastDivisors.size() != TEST) {
+                firstValue = lastValue + 1;
+                continue;
             }
 
-            if (everyNumberHasNFactors) {
-                boolean allDivisorsAreDistinct = true;
-                divisorsCheck:
-                for (int i = 1; i < TEST; i++) {
-                    List<Divisors.PrimeDivisor> divisorsI = primeDivisors.get(i);
-                    for (int j = 0; j < i; j++) {
-                        List<Divisors.PrimeDivisor> divisorsJ = primeDivisors.get(j);
+            List<List<Divisors.PrimeDivisor>> allDivisors = new ArrayList<>();
+            for (int i = TEST - 2; i >= 0; i--) {
+                List<Divisors.PrimeDivisor> iDivisors = Divisors.getPrimeDivisors(firstValue + i);
+                //if (firstValue + i) doesn't meet requirements with lastValue, than continue search
+                if (iDivisors.size() != TEST ) {
+                    firstValue += i + 1;
+                    continue search;
+                }
+                if (!haveNoCommonDivisor(iDivisors, lastDivisors)) {
+                    firstValue = lastValue + 1;
+                    continue search;
+                }
+                allDivisors.add(0, iDivisors);
+            }
+            allDivisors.add(lastDivisors);
 
-                        for (Divisors.PrimeDivisor divisorI : divisorsI) {
-                            for (Divisors.PrimeDivisor divisorJ : divisorsJ) {
-                                if (divisorI.prime == divisorJ.prime && divisorI.power == divisorJ.power) {
-                                    allDivisorsAreDistinct = false;
-                                    break divisorsCheck;
-                                }
-                            }
-                        }
+            boolean allDivisorsAreDistinct = true;
+            divisorsCheck:
+            //All numbers were already checked for having common divisor with lastValue
+            for (int i = 1; i < allDivisors.size() - 1; i++) {
+                List<Divisors.PrimeDivisor> divisorsI = allDivisors.get(i);
+                for (int j = 0; j < i; j++) {
+                    List<Divisors.PrimeDivisor> divisorsJ = allDivisors.get(j);
+
+                    if (!haveNoCommonDivisor(divisorsI, divisorsJ)) {
+                        allDivisorsAreDistinct = false;
+                        break divisorsCheck;
                     }
                 }
-
-                if (allDivisorsAreDistinct) {
-                    result = numbers.get(0);
-                    break;
-                }
             }
 
-            long nextValue = numbers.remove(0) + TEST;
-            primeDivisors.remove(0);
-
-            numbers.add(nextValue);
-            primeDivisors.add(Divisors.getPrimeDivisors(nextValue));
+            if (allDivisorsAreDistinct) {
+                return firstValue;
+            }
         }
+    }
 
-        return result;
+    private static boolean haveNoCommonDivisor(List<Divisors.PrimeDivisor> divisors1, List<Divisors.PrimeDivisor> divisors2) {
+        for (Divisors.PrimeDivisor divisor1 : divisors1) {
+            for (Divisors.PrimeDivisor divisor2 : divisors2) {
+                if (divisor1.prime == divisor2.prime && divisor1.power == divisor2.power) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public static void main(String[] args) {
